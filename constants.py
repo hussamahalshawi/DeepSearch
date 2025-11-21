@@ -1,0 +1,11 @@
+directory = "/home/hussam/ALL/work/programing/Python/PycharmProjects/Project☺/Week_3"
+# directory = "/home/hussam/ALL/work/programing/Python/PycharmProjects/Project☺/Week_3/Statistics/imags"
+# directory = "/home/hussam/ALL/work/programing/Python/books/الفواتير وتصميمها.docx"  #######################
+# directory = "/home/hussam/"
+pattern = r'[a-zA-Z0-9]'
+# text_search = "find the key with the maximum value"
+# text_search = "one for input and one for output"
+text_search = "price rating scatter"
+# text_search = "process"
+# text_search = "الصوت"
+# text_search = "hussam"
