@@ -1,6 +1,6 @@
 from constants import directory, text_search, pattern
-
+from readfile import Read
 
 if __name__ == "__main__":
-    print(directory)
-    print(text_search)
+    data = Read(directory)
+    print(data.urls)
