@@ -3,4 +3,5 @@ from readfile import Read
 
 if __name__ == "__main__":
     data = Read(directory)
-    print(data.urls)
+    print("--",data.urls)
+    print("++",data.name_files)
