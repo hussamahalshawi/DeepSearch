@@ -1,3 +1,4 @@
+import json
 import os
 
 
@@ -27,17 +28,28 @@ class Read:
             self.directory = directory
             self.urls, self.name_files = get_urls_files(directory)
             self.data_all = {}
-            self.split_name_file(self.name_files)
+            self.split_name_file(self.name_files,self.urls)
             # self.read_file(self.urls)
         except Exception as e:
             print(f'Error: {e}')
 
-    def split_name_file(self, name_files: list) -> None:
+    def split_name_file(self, name_files: list, urls: list) -> None:
         for name_file in name_files:
             lis_name_file = name_file.split(".")
-            # print(len(lis_name_file))
+            print(lis_name_file[-1])
+            if lis_name_file[-1] == "json":
+                self.read_file_json(name_files,urls)
 
-
+    def read_file_json(self, name_files: list, urls: list) -> None:
+        try:
+            for url_file in urls:
+                with open(url_file, "r") as file:
+                    content = json.load(file)
+                    print(content)
+        except FileNotFoundError:
+            print("The file doesn't exist.")
+        except Exception as e:
+            print("An error occurred:", e)
 
     def read_file(self, urls: list) -> None:
         try:
