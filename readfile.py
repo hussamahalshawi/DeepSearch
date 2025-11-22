@@ -35,7 +35,8 @@ class Read:
         try:
             for url_file in urls:
                 with open(url_file, "r") as file:
-                    print(file)
+                    content = file.read()
+                    print(content)
         except FileNotFoundError:
             print("The file doesn't exist.")
         except Exception as e:
