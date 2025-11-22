@@ -27,16 +27,24 @@ class Read:
             self.directory = directory
             self.urls, self.name_files = get_urls_files(directory)
             self.data_all = {}
-            self.read_file(self.urls)
+            self.split_name_file(self.name_files)
+            # self.read_file(self.urls)
         except Exception as e:
             print(f'Error: {e}')
+
+    def split_name_file(self, name_files: list) -> None:
+        for name_file in name_files:
+            lis_name_file = name_file.split(".")
+            # print(len(lis_name_file))
+
+
 
     def read_file(self, urls: list) -> None:
         try:
             for url_file in urls:
                 with open(url_file, "r") as file:
                     content = file.read()
-                    print(content)
+                    # print(content)
         except FileNotFoundError:
             print("The file doesn't exist.")
         except Exception as e:
