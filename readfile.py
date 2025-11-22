@@ -42,6 +42,8 @@ class Read:
                 self.read_file_json(name_files,urls)
             elif lis_name_file[-1] == "csv":
                 self.read_file_csv(name_files, urls)
+            else:
+                self.read_file(name_files, urls)
 
     def read_file_json(self, name_files: list, urls: list) -> None:
         try:
@@ -68,12 +70,13 @@ class Read:
         except Exception as e:
             print("An error occurred:", e)
 
-    def read_file(self, urls: list) -> None:
+    def read_file(self, name_files: list, urls: list) -> None:
         try:
             for url_file in urls:
                 with open(url_file, "r") as file:
                     content = file.read()
                     # print(content)
+                    break
         except FileNotFoundError:
             print("The file doesn't exist.")
         except Exception as e:
