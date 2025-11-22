@@ -27,6 +27,16 @@ class Read:
             self.directory = directory
             self.urls, self.name_files = get_urls_files(directory)
             self.data_all = {}
+            self.read_file(self.urls)
         except Exception as e:
             print(f'Error: {e}')
 
+    def read_file(self, urls: list) -> None:
+        try:
+            for url_file in urls:
+                with open(url_file, "r") as file:
+                    print(file)
+        except FileNotFoundError:
+            print("The file doesn't exist.")
+        except Exception as e:
+            print("An error occurred:", e)
