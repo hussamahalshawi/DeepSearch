@@ -208,7 +208,7 @@ class Read:
             print("The file doesn't exist.")
         except Exception as e:
             print("An error occurred:", e)
-    def read_file_html(self, name_file, url) -> None:
+    def read_file_code(self, name_file, url) -> None:
         try:
             with open(url) as file:
                 content = file.read()
