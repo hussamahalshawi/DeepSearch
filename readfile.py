@@ -74,6 +74,8 @@ class Read:
                 self.read_file_zip(name_file, url)
             elif lis_name_file[-1] == "html":  ###########
                 self.read_file_html(name_file, url)
+            elif lis_name_file[-1] == "py":  ###########
+                self.read_file_code(name_file, url)
             else:
                 self.read_file(name_file, url)
 
@@ -200,6 +202,14 @@ class Read:
         try:
             with open(url) as file:
                 soup = BeautifulSoup(file, "html.parser")
+        except FileNotFoundError:
+            print("The file doesn't exist.")
+        except Exception as e:
+            print("An error occurred:", e)
+    def read_file_html(self, name_file, url) -> None:
+        try:
+            with open(url) as file:
+                content = file.read()
         except FileNotFoundError:
             print("The file doesn't exist.")
         except Exception as e:
