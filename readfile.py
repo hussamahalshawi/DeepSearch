@@ -1,7 +1,8 @@
-import csv
 import json
 import os
-
+import pandas as pd
+import yaml
+import xml.etree.ElementTree as ET
 
 
 
@@ -40,19 +41,35 @@ class Read:
             self.data_all[name_file] = url
             lis_name_file = name_file.split(".")
             print(lis_name_file[-1])
-            if lis_name_file[-1] == "json":
+            if lis_name_file[-1] == "txt":
+                self.read_file_txt(name_file,url)
+            elif lis_name_file[-1] == "json":
                 self.read_file_json(name_file,url)
             elif lis_name_file[-1] == "csv":
                 self.read_file_csv(name_file, url)
+            elif lis_name_file[-1] == "yaml":
+                self.read_file_yaml(name_file, url)
+            elif lis_name_file[-1] == "xml":
+                self.read_file_xml(name_file, url)
             else:
                 self.read_file(name_file, url)
+
+    def read_file_txt(self, name_file, url) -> None:
+        try:
+            with open(url, "r") as file:
+                content = file.read()
+                # print(content)
+        except FileNotFoundError:
+            print("The file doesn't exist.")
+        except Exception as e:
+            print("An error occurred:", e)
+
 
     def read_file_json(self, name_file, url) -> None:
         try:
             with open(url, "r") as file:
-                print("*/*/*/*//*//*//***/*/*/*/", url)
                 content = json.load(file)
-                print(content)
+                # print(content)
         except FileNotFoundError:
             print("The file doesn't exist.")
         except Exception as e:
@@ -61,13 +78,35 @@ class Read:
 
     def read_file_csv(self, name_file, url) -> None:
         try:
-            with open(url, "r") as file:
-                content = csv.DictReader(file)
-                # print(content)
+            df = pd.read_csv(url)
+            # print(df)
+            # with open(url, "r") as file:
+            #     content = csv.DictReader(file)
+            #     # print(content)
         except FileNotFoundError:
             print("The file doesn't exist.")
         except Exception as e:
             print("An error occurred:", e)
+
+
+    def read_file_yaml(self, name_file, url) -> None:
+        try:
+            with open(url) as file:
+                data = yaml.safe_load(file)
+        except FileNotFoundError:
+            print("The file doesn't exist.")
+        except Exception as e:
+            print("An error occurred:", e)
+
+    def read_file_xml(self, name_file, url) -> None:
+        try:
+            tree = ET.parse(url)
+            root = tree.getroot()
+        except FileNotFoundError:
+            print("The file doesn't exist.")
+        except Exception as e:
+            print("An error occurred:", e)
+
 
     def read_file(self, name_file, url) -> None:
         try:
