@@ -7,14 +7,14 @@ import os
 
 
 def get_urls_files(directory):
-    urls = []
-    name_files = []
+    # urls = []
+    # name_files = []
+    urls = {}
     for root, dirs, files in os.walk(directory):
         if ".git" not in  root:
             for file in files:
-                urls.append(os.path.join(root, file))
-                name_files.append(file)
-    return urls, name_files
+                urls[file] = os.path.join(root, file)
+    return urls
 
 
 class Read:
@@ -27,56 +27,53 @@ class Read:
         """
         try:
             self.directory = directory
-            self.urls, self.name_files = get_urls_files(directory)
+            self.urls = get_urls_files(directory)
             self.data_all = {}
-            self.split_name_file(self.name_files,self.urls)
+            self.split_name_file(self.urls)
             # self.read_file(self.urls)
         except Exception as e:
             print(f'Error: {e}')
 
-    def split_name_file(self, name_files: list, urls: list) -> None:
-        for name_file in name_files:
+    def split_name_file(self, urls: dict) -> None:
+        for name_file, url in urls.items():
+            # print(name_file, url)
+            self.data_all[name_file] = url
             lis_name_file = name_file.split(".")
             print(lis_name_file[-1])
             if lis_name_file[-1] == "json":
-                self.read_file_json(name_files,urls)
+                self.read_file_json(name_file,url)
             elif lis_name_file[-1] == "csv":
-                self.read_file_csv(name_files, urls)
+                self.read_file_csv(name_file, url)
             else:
-                self.read_file(name_files, urls)
+                self.read_file(name_file, url)
 
-    def read_file_json(self, name_files: list, urls: list) -> None:
+    def read_file_json(self, name_file, url) -> None:
         try:
-            for url_file in urls:
-                with open(url_file, "r") as file:
-                    content = json.load(file)
-                    print("content")
-                    break
+            with open(url, "r") as file:
+                print("*/*/*/*//*//*//***/*/*/*/", url)
+                content = json.load(file)
+                print(content)
         except FileNotFoundError:
             print("The file doesn't exist.")
         except Exception as e:
             print("An error occurred:", e)
 
 
-    def read_file_csv(self, name_files: list, urls: list) -> None:
+    def read_file_csv(self, name_file, url) -> None:
         try:
-            for url_file in urls:
-                with open(url_file, "r") as file:
-                    content = csv.DictReader(file)
-                    print(content)
-                    break
+            with open(url, "r") as file:
+                content = csv.DictReader(file)
+                # print(content)
         except FileNotFoundError:
             print("The file doesn't exist.")
         except Exception as e:
             print("An error occurred:", e)
 
-    def read_file(self, name_files: list, urls: list) -> None:
+    def read_file(self, name_file, url) -> None:
         try:
-            for url_file in urls:
-                with open(url_file, "r") as file:
-                    content = file.read()
-                    # print(content)
-                    break
+            with open(url, "r") as file:
+                content = file.read()
+                # print(content)
         except FileNotFoundError:
             print("The file doesn't exist.")
         except Exception as e:
