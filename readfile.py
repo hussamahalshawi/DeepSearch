@@ -3,7 +3,10 @@ import os
 import pandas as pd
 import yaml
 import xml.etree.ElementTree as ET
-
+from docx import Document
+from PyPDF2 import PdfReader
+from PIL import Image
+import wave
 
 
 
@@ -51,6 +54,16 @@ class Read:
                 self.read_file_yaml(name_file, url)
             elif lis_name_file[-1] == "xml":
                 self.read_file_xml(name_file, url)
+            elif lis_name_file[-1] == "xlsx" or lis_name_file[-1] == "xls":
+                self.read_file_xlsx(name_file, url)
+            elif lis_name_file[-1] == "docx":
+                self.read_file_docx(name_file, url)
+            elif lis_name_file[-1] == "pdf":
+                self.read_file_pdf(name_file, url)
+            elif lis_name_file[-1] == "png":###########
+                self.read_file_image(name_file, url)
+            elif lis_name_file[-1] == "mp3":###########
+                self.read_file_audio(name_file, url)
             else:
                 self.read_file(name_file, url)
 
@@ -102,6 +115,54 @@ class Read:
         try:
             tree = ET.parse(url)
             root = tree.getroot()
+        except FileNotFoundError:
+            print("The file doesn't exist.")
+        except Exception as e:
+            print("An error occurred:", e)
+
+    def read_file_xlsx(self, name_file, url) -> None:
+        try:
+            df = pd.read_excel(url)
+        except FileNotFoundError:
+            print("The file doesn't exist.")
+        except Exception as e:
+            print("An error occurred:", e)
+
+
+    def read_file_docx(self, name_file, url) -> None:
+        try:
+            doc = Document(url)
+            for p in doc.paragraphs:
+                print(p.text)
+        except FileNotFoundError:
+            print("The file doesn't exist.")
+        except Exception as e:
+            print("An error occurred:", e)
+
+    def read_file_pdf(self, name_file, url) -> None:
+        try:
+            reader = PdfReader(url)
+            for page in reader.pages:
+                print(page.extract_text())
+        except FileNotFoundError:
+            print("The file doesn't exist.")
+        except Exception as e:
+            print("An error occurred:", e)
+
+
+    def read_file_image(self, name_file, url) -> None:
+        try:
+            img = Image.open(url)
+        except FileNotFoundError:
+            print("The file doesn't exist.")
+        except Exception as e:
+            print("An error occurred:", e)
+
+
+    def read_file_audio(self, name_file, url) -> None:
+        try:
+            with wave.open(url) as audio:
+                print(audio.getparams())
         except FileNotFoundError:
             print("The file doesn't exist.")
         except Exception as e:
