@@ -46,8 +46,9 @@ class Read:
     def split_name_file(self, urls: dict) -> None:
         for name_file, url in urls.items():
             # print(name_file, url)
-            self.data_all[name_file] = url
+            self.data_all[url] = []
             lis_name_file = name_file.split(".")
+            self.data_all[url].append(lis_name_file[0])
             print(lis_name_file[-1])
             if lis_name_file[-1] == "txt":
                 self.read_file_txt(name_file,url)
@@ -84,9 +85,11 @@ class Read:
 
     def read_file_txt(self, name_file, url) -> None:
         try:
+            print(self.data_all)
             with open(url, "r") as file:
                 content = file.read()
-                # print(content)
+                self.data_all[url].append(content)
+                # print(self.data_all)
         except FileNotFoundError:
             print("The file doesn't exist.")
         except Exception as e:
@@ -97,6 +100,7 @@ class Read:
         try:
             with open(url, "r") as file:
                 content = json.load(file)
+                self.data_all[url].append(content)
                 # print(content)
         except FileNotFoundError:
             print("The file doesn't exist.")
