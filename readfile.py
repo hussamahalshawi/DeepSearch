@@ -8,6 +8,7 @@ from PyPDF2 import PdfReader
 from PIL import Image
 import wave
 import cv2
+import zipfile
 
 
 
@@ -67,6 +68,8 @@ class Read:
                 self.read_file_audio(name_file, url)
             elif lis_name_file[-1] == "mp4":  ###########
                 self.read_file_video(name_file, url)
+            elif lis_name_file[-1] == "zip":  ###########
+                self.read_file_zip(name_file, url)
             else:
                 self.read_file(name_file, url)
 
@@ -175,6 +178,14 @@ class Read:
         try:
             video = cv2.VideoCapture(url)
 
+        except FileNotFoundError:
+            print("The file doesn't exist.")
+        except Exception as e:
+            print("An error occurred:", e)
+    def read_file_zip(self, name_file, url) -> None:
+        try:
+            with zipfile.ZipFile("files.zip") as z:
+                z.extractall()
         except FileNotFoundError:
             print("The file doesn't exist.")
         except Exception as e:
