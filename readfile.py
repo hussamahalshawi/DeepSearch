@@ -175,6 +175,19 @@ class Read:
     def read_file_xlsx(self, name_file, url) -> None:
         try:
             df = pd.read_excel(url)
+            # df = df.loc[:, ~df.columns.str.contains('^Unnamed')]
+            words = []
+            for col in df.columns:
+                print(col)
+                if "Unnamed" not in str(col):    # تجاهل النصوص الفارغة
+                    words.append(col)
+                for value in df[col]:
+                    if pd.notna(value):  # تجاهل القيم الفارغة
+                        value = str(value).strip()  # تحويل لنص وتنظيفه
+                        if value:  # تجاهل النصوص الفارغة
+                            print(value)
+                            words.extend(value.split())
+            self.data_all[url].extend(words)
         except FileNotFoundError:
             print("The file doesn't exist.")
         except Exception as e:
