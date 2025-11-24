@@ -85,7 +85,6 @@ class Read:
 
     def read_file_txt(self, name_file, url) -> None:
         try:
-            print(self.data_all)
             with open(url, "r") as file:
                 content = file.read()
                 words = content.split()
