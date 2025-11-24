@@ -11,6 +11,10 @@ import wave
 import zipfile
 from bs4 import BeautifulSoup
 import sqlite3
+
+from pygments.lexer import words
+
+
 # from pydub import AudioSegment
 
 
@@ -88,7 +92,7 @@ class Read:
             with open(url, "r") as file:
                 content = file.read()
             words = content.split()
-            self.data_all[url] += words
+            self.data_all[url].extend(words)
         except FileNotFoundError:
             print("The file doesn't exist.")
         except Exception as e:
@@ -154,6 +158,15 @@ class Read:
         try:
             tree = ET.parse(url)
             root = tree.getroot()
+            texts = [
+                elem.text.strip()
+                for elem in root.iter()
+                if elem.text and elem.text.strip()
+            ]
+            words = []
+            for item in texts:
+                words.extend(item.split())
+            self.data_all[url].extend(words)
         except FileNotFoundError:
             print("The file doesn't exist.")
         except Exception as e:
