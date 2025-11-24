@@ -205,8 +205,8 @@ class Read:
     def read_file_pdf(self, url) -> None:
         try:
             reader = PdfReader(url)
-            # for page in reader.pages:
-            #     print(page.extract_text())
+            for page in reader.pages:
+                self.data_all[url].extend(page.extract_text().split())
         except FileNotFoundError:
             print("The file doesn't exist.")
         except Exception as e:
