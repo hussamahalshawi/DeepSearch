@@ -87,8 +87,8 @@ class Read:
         try:
             with open(url, "r") as file:
                 content = file.read()
-                words = content.split()
-                self.data_all[url] += words
+            words = content.split()
+            self.data_all[url] += words
         except FileNotFoundError:
             print("The file doesn't exist.")
         except Exception as e:
@@ -107,19 +107,16 @@ class Read:
 
     def extract_text_json(self, data, url):
         try:
-            print(data)
+            # print(data)
             if isinstance(data, dict):
                 for key, value in data.items():
-                    print(key)
-                    self.data_all[url] += key
+                    # print(key)
+                    self.data_all[url].append(key)
                     self.extract_text_json(value, url)
-
             elif isinstance(data, list):
                 for item in data:
                     self.extract_text_json(item, url)
-            elif isinstance(data, str):
-                self.data_all[url] += data
-            elif isinstance(data, int) or isinstance(data, float):
+            elif isinstance(data, int) or isinstance(data, float) or isinstance(data, str):
                 self.data_all[url].append(data)
 
         except FileNotFoundError:
@@ -131,10 +128,11 @@ class Read:
     def read_file_csv(self, name_file, url) -> None:
         try:
             df = pd.read_csv(url)
-            # print(df)
-            # with open(url, "r") as file:
-            #     content = csv.DictReader(file)
-            #     # print(content)
+            for col in df.columns:
+                self.data_all[url].append(col)
+                for value in df[col].astype(str):
+                    for word in value.split():
+                        self.data_all[url].append(word)
         except FileNotFoundError:
             print("The file doesn't exist.")
         except Exception as e:
