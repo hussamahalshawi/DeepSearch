@@ -51,9 +51,9 @@ class Read:
             self.data_all[url].append(lis_name_file[0])
             print(lis_name_file[-1])
             if lis_name_file[-1] == "txt":
-                self.read_file_txt(name_file,url)
+                self.read_file_txt(url)
             elif lis_name_file[-1] == "json":
-                self.read_file_json(name_file,url)
+                self.read_file_json(url)
             elif lis_name_file[-1] == "csv":
                 self.read_file_csv(name_file, url)
             elif lis_name_file[-1] == "yaml":
@@ -83,7 +83,7 @@ class Read:
             else:
                 self.read_file(name_file, url)
 
-    def read_file_txt(self, name_file, url) -> None:
+    def read_file_txt(self, url) -> None:
         try:
             with open(url, "r") as file:
                 content = file.read()
@@ -95,13 +95,33 @@ class Read:
             print("An error occurred:", e)
 
 
-    def read_file_json(self, name_file, url) -> None:
+    def read_file_json(self, url) -> None:
         try:
             with open(url, "r") as file:
                 content = json.load(file)
-                print(type(content))
-                # self.data_all[url].append(content)
-                # print(content)
+            self.extract_text_json(content, url)
+        except FileNotFoundError:
+            print("The file doesn't exist.")
+        except Exception as e:
+            print("An error occurred:", e)
+
+    def extract_text_json(self, data, url):
+        try:
+            print(data)
+            if isinstance(data, dict):
+                for key, value in data.items():
+                    print(key)
+                    self.data_all[url] += key
+                    self.extract_text_json(value, url)
+
+            elif isinstance(data, list):
+                for item in data:
+                    self.extract_text_json(item, url)
+            elif isinstance(data, str):
+                self.data_all[url] += data
+            elif isinstance(data, int) or isinstance(data, float):
+                self.data_all[url].append(data)
+
         except FileNotFoundError:
             print("The file doesn't exist.")
         except Exception as e:
