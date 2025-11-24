@@ -259,6 +259,8 @@ class Read:
             print("The file doesn't exist.")
         except Exception as e:
             print("An error occurred:", e)
+
+
     def read_file_code(self, name_file, url) -> None:
         try:
             with open(url) as file:
@@ -267,10 +269,28 @@ class Read:
             print("The file doesn't exist.")
         except Exception as e:
             print("An error occurred:", e)
+
+
     def read_file_databace(self, name_file, url) -> None:
         try:
             conn = sqlite3.connect(url)
             cursor = conn.cursor()
+            cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+            tables = cursor.fetchall()
+            rows = ()
+            words = []
+
+            for table_name in tables:
+                table_name = table_name[0]
+                cursor.execute(f"SELECT * FROM {table_name}")
+                rows = cursor.fetchall()
+
+            # عرض كل الصفوف
+            for row in rows:
+                for word in row:
+                    if word != None:
+                        words.append(word)
+            self.data_all[url].extend(words)
         except FileNotFoundError:
             print("The file doesn't exist.")
         except Exception as e:
