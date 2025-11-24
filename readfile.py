@@ -99,23 +99,23 @@ class Read:
         try:
             with open(url, "r") as file:
                 content = json.load(file)
-            self.extract_text_json(content, url)
+            self.extract_text_json_yaml(content, url)
         except FileNotFoundError:
             print("The file doesn't exist.")
         except Exception as e:
             print("An error occurred:", e)
 
-    def extract_text_json(self, data, url):
+    def extract_text_json_yaml(self, data, url):
         try:
             # print(data)
             if isinstance(data, dict):
                 for key, value in data.items():
                     # print(key)
                     self.data_all[url].append(key)
-                    self.extract_text_json(value, url)
+                    self.extract_text_json_yaml(value, url)
             elif isinstance(data, list):
                 for item in data:
-                    self.extract_text_json(item, url)
+                    self.extract_text_json_yaml(item, url)
             elif isinstance(data, int) or isinstance(data, float) or isinstance(data, str):
                 self.data_all[url].append(data)
 
@@ -142,11 +142,13 @@ class Read:
     def read_file_yaml(self, name_file, url) -> None:
         try:
             with open(url) as file:
-                data = yaml.safe_load(file)
+                content = yaml.safe_load(file)
+                self.extract_text_json_yaml(content, url)
         except FileNotFoundError:
             print("The file doesn't exist.")
         except Exception as e:
             print("An error occurred:", e)
+
 
     def read_file_xml(self, name_file, url) -> None:
         try:
