@@ -3,8 +3,8 @@ import os
 import pandas as pd
 import yaml
 import xml.etree.ElementTree as ET
-# from docx import Document
-# from PyPDF2 import PdfReader
+from docx import Document
+from PyPDF2 import PdfReader
 from PIL import Image
 import wave
 # import cv2
@@ -88,8 +88,8 @@ class Read:
             print(self.data_all)
             with open(url, "r") as file:
                 content = file.read()
-                self.data_all[url].append(content)
-                # print(self.data_all)
+                words = content.split()
+                self.data_all[url] += words
         except FileNotFoundError:
             print("The file doesn't exist.")
         except Exception as e:
@@ -100,7 +100,8 @@ class Read:
         try:
             with open(url, "r") as file:
                 content = json.load(file)
-                self.data_all[url].append(content)
+                print(type(content))
+                # self.data_all[url].append(content)
                 # print(content)
         except FileNotFoundError:
             print("The file doesn't exist.")
@@ -199,8 +200,9 @@ class Read:
     def read_file_zip(self, name_file, url) -> None:
         try:
             with zipfile.ZipFile(url) as z:
-                df = z.extractall()
-                print(df)
+                pass
+                # df = z.extractall()
+                # print(df)
         except FileNotFoundError:
             print("The file doesn't exist.")
         except Exception as e:
