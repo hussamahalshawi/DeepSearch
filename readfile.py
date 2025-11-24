@@ -59,13 +59,13 @@ class Read:
             elif lis_name_file[-1] == "json":
                 self.read_file_json(url)
             elif lis_name_file[-1] == "csv":
-                self.read_file_csv(name_file, url)
+                self.read_file_csv(url)
             elif lis_name_file[-1] == "yaml":
-                self.read_file_yaml(name_file, url)
+                self.read_file_yaml(url)
             elif lis_name_file[-1] == "xml":
-                self.read_file_xml(name_file, url)
+                self.read_file_xml(url)
             elif lis_name_file[-1] == "xlsx" or lis_name_file[-1] == "xls":
-                self.read_file_xlsx(name_file, url)
+                self.read_file_xlsx(url)
             # elif lis_name_file[-1] == "docx":
             #     self.read_file_docx(name_file, url)
             # elif lis_name_file[-1] == "pdf":
@@ -129,7 +129,7 @@ class Read:
             print("An error occurred:", e)
 
 
-    def read_file_csv(self, name_file, url) -> None:
+    def read_file_csv(self, url) -> None:
         try:
             df = pd.read_csv(url)
             for col in df.columns:
@@ -143,7 +143,7 @@ class Read:
             print("An error occurred:", e)
 
 
-    def read_file_yaml(self, name_file, url) -> None:
+    def read_file_yaml(self, url) -> None:
         try:
             with open(url) as file:
                 content = yaml.safe_load(file)
@@ -154,7 +154,7 @@ class Read:
             print("An error occurred:", e)
 
 
-    def read_file_xml(self, name_file, url) -> None:
+    def read_file_xml(self, url) -> None:
         try:
             tree = ET.parse(url)
             root = tree.getroot()
@@ -172,20 +172,18 @@ class Read:
         except Exception as e:
             print("An error occurred:", e)
 
-    def read_file_xlsx(self, name_file, url) -> None:
+    def read_file_xlsx(self, url) -> None:
         try:
             df = pd.read_excel(url)
             # df = df.loc[:, ~df.columns.str.contains('^Unnamed')]
             words = []
             for col in df.columns:
-                print(col)
                 if "Unnamed" not in str(col):    # تجاهل النصوص الفارغة
                     words.append(col)
                 for value in df[col]:
                     if pd.notna(value):  # تجاهل القيم الفارغة
                         value = str(value).strip()  # تحويل لنص وتنظيفه
                         if value:  # تجاهل النصوص الفارغة
-                            print(value)
                             words.extend(value.split())
             self.data_all[url].extend(words)
         except FileNotFoundError:
