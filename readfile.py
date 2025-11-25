@@ -298,7 +298,20 @@ class Read:
 
     def read_file_audio(self, url, z, urlz) -> None:
         try:
-            pass
+            asr = pipeline("automatic-speech-recognition", model="openai/whisper-small")
+            # asr = pipeline(
+            #     "automatic-speech-recognition",
+            #     model="openai/whisper-medium",
+            #     generate_kwargs={"language": "arabic"}
+            # )
+            if z:  # لو الملف الصوتي داخل ZIP
+                audio_bytes = BytesIO(z.read(url))  # url = مسار الملف داخل zip
+                text = asr(audio_bytes)["text"]
+            else:
+                text = asr(url)["text"]
+
+            print("\n📢 نص محتوى الصوت:")
+            print(text)
             # audio = AudioSegment.from_file("file.mp3")
         except FileNotFoundError:
             print("The file doesn't exist.")
