@@ -94,7 +94,7 @@ class Read:
             elif lis_name_file[-1] == "html":  ###########
                 self.read_file_html(url, z, urlzn)
             elif lis_name_file[-1] == "py":  ###########
-                self.read_file_code(url, z, urlzn)
+                self.read_file_txt(url, z, urlzn)
             elif lis_name_file[-1] == "db":  ###########
                 self.read_file_databace(url, z, urlzn)
             else:
@@ -102,9 +102,11 @@ class Read:
 
     def read_file_txt(self, url, z, urlz) -> None:
         try:
-            if z:
+            if z is not None:
                 with z.open(url, "r") as file:
                     content = file.read()
+                words = content.split()
+                self.data_all[url].extend(words)
             else:
                 with open(url, "r") as file:
                     content = file.read()
@@ -163,8 +165,8 @@ class Read:
             if z:
                 with z.open(url) as file:
                     content = yaml.safe_load(file)
-                    print("/////",type(content))
-                    print("/////",type(urlz))
+                    # print("/////",type(content))
+                    # print("/////",type(urlz))
                 self.extract_text_json_yaml(content, urlz)
             else:
                 with open(url) as file:
