@@ -79,7 +79,7 @@ class Read:
                 self.read_file_xml(url, z, urlzn)
             elif lis_name_file[-1] == "xlsx" or lis_name_file[-1] == "xls":
                 self.read_file_xlsx(url, z, urlzn)
-            elif lis_name_file[-1] == "docx":
+            elif lis_name_file[-1] == "docx" or lis_name_file[-1] == "doc":
                 self.read_file_docx(url, z, urlzn)
             elif lis_name_file[-1] == "pdf":
                 self.read_file_pdf(url, z, urlzn)
