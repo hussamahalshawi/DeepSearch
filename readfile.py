@@ -11,7 +11,9 @@ import cv2
 import zipfile
 from bs4 import BeautifulSoup
 import sqlite3
-
+from zipfile import ZipFile
+from io import BytesIO
+from transformers import pipeline
 from pygments.lexer import words
 
 
@@ -268,7 +270,26 @@ class Read:
 
     def read_file_image(self, url, z, urlz) -> None:
         try:
-            img = Image.open(url)
+            # الوصف بالعربي للصوره
+            # captioner = pipeline(
+            #     "image-to-text",
+            #     model="microsoft/Florence-2-large",
+            #     task="caption",
+            #     max_new_tokens=70
+            # )
+            captioner = pipeline("image-to-text", model="Salesforce/blip-image-captioning-base")
+            if z:
+                # print(url)
+                img = Image.open(BytesIO(z.read(url)))
+                print("///",img)
+            else:
+                img = Image.open(url)
+                print(img)
+            result = captioner(img)
+            description = result[0]["generated_text"]
+
+            print("\n📌 وصف الصورة:")
+            print(description)
         except FileNotFoundError:
             print("The file doesn't exist.")
         except Exception as e:
