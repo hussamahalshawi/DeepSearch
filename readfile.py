@@ -102,11 +102,11 @@ class Read:
 
     def read_file_txt(self, url, z, urlz) -> None:
         try:
-            if z is not None:
+            if z:
                 with z.open(url, "r") as file:
                     content = file.read()
                 words = content.split()
-                self.data_all[url].extend(words)
+                self.data_all[urlz].extend(words)
             else:
                 with open(url, "r") as file:
                     content = file.read()
@@ -120,9 +120,17 @@ class Read:
 
     def read_file_json(self, url, z, urlz) -> None:
         try:
-            with open(url, "r") as file:
-                content = json.load(file)
-            self.extract_text_json_yaml(content, url)
+            if z:
+                with z.open(url) as file:
+                    content = json.load(file)
+                    # print("/////",type(content))
+                    # print("/////",type(urlz))
+                self.extract_text_json_yaml(content, urlz)
+            else:
+                with open(url, "r") as file:
+                    content = json.load(file)
+                self.extract_text_json_yaml(content, url)
+
         except FileNotFoundError:
             print("The file doesn't exist.")
         except Exception as e:
