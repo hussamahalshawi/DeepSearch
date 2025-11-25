@@ -157,11 +157,18 @@ class Read:
     def read_file_csv(self, url, z, urlz) -> None:
         try:
             df = pd.read_csv(url)
-            for col in df.columns:
-                self.data_all[url].append(col)
-                for value in df[col].astype(str):
-                    for word in value.split():
-                        self.data_all[url].append(word)
+            if z:
+                for col in df.columns:
+                    self.data_all[urlz].append(col)
+                    for value in df[col].astype(str):
+                        for word in value.split():
+                            self.data_all[urlz].append(word)
+            else:
+                for col in df.columns:
+                    self.data_all[url].append(col)
+                    for value in df[col].astype(str):
+                        for word in value.split():
+                            self.data_all[url].append(word)
         except FileNotFoundError:
             print("The file doesn't exist.")
         except Exception as e:
@@ -198,7 +205,10 @@ class Read:
             words = []
             for item in texts:
                 words.extend(item.split())
-            self.data_all[url].extend(words)
+            if z:
+                self.data_all[urlz].extend(words)
+            else:
+                self.data_all[url].extend(words)
         except FileNotFoundError:
             print("The file doesn't exist.")
         except Exception as e:
