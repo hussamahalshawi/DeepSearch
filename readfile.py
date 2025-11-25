@@ -240,8 +240,12 @@ class Read:
     def read_file_docx(self, url, z, urlz) -> None:
         try:
             doc = Document(url)
-            for p in doc.paragraphs:
-                self.data_all[url].extend(p.text.split())
+            if z:
+                for p in doc.paragraphs:
+                    self.data_all[urlz].extend(p.text.split())
+            else:
+                for p in doc.paragraphs:
+                    self.data_all[url].extend(p.text.split())
         except FileNotFoundError:
             print("The file doesn't exist.")
         except Exception as e:
