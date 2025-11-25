@@ -267,12 +267,6 @@ class Read:
             urls = {}
             urlz = []
             with zipfile.ZipFile(url) as zip_obj:
-                # print(z.filename.split("/")[-1])
-                # for filename in zip_obj.namelist():
-                #     file_name = filename.split("/")[-1]
-                #     print(filename)
-                #     urls[file_name] = filename
-                # self.split_name_file(urls, zip_obj, url + "/" + filename)
                 for file_info in zip_obj.infolist():
                     if file_info.is_dir():
                         continue
