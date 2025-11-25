@@ -7,7 +7,7 @@ from docx import Document
 from PyPDF2 import PdfReader
 from PIL import Image
 import wave
-# import cv2
+import cv2
 import zipfile
 from bs4 import BeautifulSoup
 import sqlite3
@@ -47,59 +47,76 @@ class Read:
         except Exception as e:
             print(f'Error: {e}')
 
-    def split_name_file(self, urls: dict) -> None:
-        for name_file, url in urls.items():
+    def split_name_file(self, urls: dict, z = None, urlz=None) -> None:
+        urlzn = ""
+        if urlz is None:
+            urlz = []
+
+        # print(urlz)
+        for index, (name_file, url) in enumerate(urls.items(), start=0):
             # print(name_file, url)
+            # print("///////////")
+            # print(index)
             self.data_all[url] = []
+            # print("////////")
             lis_name_file = name_file.split(".")
-            self.data_all[url].append(lis_name_file[0])
+            if urlz != []:
+                urlzn = urlz[index]
+                self.data_all[urlzn] = []
+                self.data_all[urlzn].append(lis_name_file[0])
+            else:
+                self.data_all[url].append(lis_name_file[0])
             print(lis_name_file[-1])
             if lis_name_file[-1] == "txt":
-                self.read_file_txt(url)
+                self.read_file_txt(url, z, urlzn)
             elif lis_name_file[-1] == "json":
-                self.read_file_json(url)
+                self.read_file_json(url, z, urlzn)
             elif lis_name_file[-1] == "csv":
-                self.read_file_csv(url)
-            elif lis_name_file[-1] == "yaml":
-                self.read_file_yaml(url)
+                self.read_file_csv(url, z, urlzn)
+            elif lis_name_file[-1] == "yaml" or lis_name_file[-1] == "yml":
+                self.read_file_yaml(url, z, urlzn)
             elif lis_name_file[-1] == "xml":
-                self.read_file_xml(url)
+                self.read_file_xml(url, z, urlzn)
             elif lis_name_file[-1] == "xlsx" or lis_name_file[-1] == "xls":
-                self.read_file_xlsx(url)
+                self.read_file_xlsx(url, z, urlzn)
             elif lis_name_file[-1] == "docx":
-                self.read_file_docx(url)
+                self.read_file_docx(url, z, urlzn)
             elif lis_name_file[-1] == "pdf":
-                self.read_file_pdf(url)
+                self.read_file_pdf(url, z, urlzn)
             elif lis_name_file[-1] == "png":###########
-                self.read_file_image(name_file, url)
+                self.read_file_image(url, z, urlzn)
             elif lis_name_file[-1] == "mp3":###########
-                self.read_file_audio(name_file, url)
-            # elif lis_name_file[-1] == "mp4":  ###########
-            #     self.read_file_video(name_file, url)
+                self.read_file_audio(url, z, urlzn)
+            elif lis_name_file[-1] == "mp4":  ###########
+                self.read_file_video(url, z, urlzn)
             elif lis_name_file[-1] == "zip":  ###########
-                self.read_file_zip(name_file, url)
+                self.read_file_zip(url, z, urlzn)
             elif lis_name_file[-1] == "html":  ###########
-                self.read_file_html(name_file, url)
+                self.read_file_html(url, z, urlzn)
             elif lis_name_file[-1] == "py":  ###########
-                self.read_file_code(name_file, url)
+                self.read_file_code(url, z, urlzn)
             elif lis_name_file[-1] == "db":  ###########
-                self.read_file_databace(name_file, url)
+                self.read_file_databace(url, z, urlzn)
             else:
-                self.read_file(name_file, url)
+                self.read_file(url, z, urlzn)
 
-    def read_file_txt(self, url) -> None:
+    def read_file_txt(self, url, z, urlz) -> None:
         try:
-            with open(url, "r") as file:
-                content = file.read()
-            words = content.split()
-            self.data_all[url].extend(words)
+            if z:
+                with z.open(url, "r") as file:
+                    content = file.read()
+            else:
+                with open(url, "r") as file:
+                    content = file.read()
+                words = content.split()
+                self.data_all[url].extend(words)
         except FileNotFoundError:
             print("The file doesn't exist.")
         except Exception as e:
             print("An error occurred:", e)
 
 
-    def read_file_json(self, url) -> None:
+    def read_file_json(self, url, z, urlz) -> None:
         try:
             with open(url, "r") as file:
                 content = json.load(file)
@@ -111,10 +128,8 @@ class Read:
 
     def extract_text_json_yaml(self, data, url):
         try:
-            # print(data)
             if isinstance(data, dict):
                 for key, value in data.items():
-                    # print(key)
                     self.data_all[url].append(key)
                     self.extract_text_json_yaml(value, url)
             elif isinstance(data, list):
@@ -129,7 +144,7 @@ class Read:
             print("An error occurred:", e)
 
 
-    def read_file_csv(self, url) -> None:
+    def read_file_csv(self, url, z, urlz) -> None:
         try:
             df = pd.read_csv(url)
             for col in df.columns:
@@ -143,10 +158,17 @@ class Read:
             print("An error occurred:", e)
 
 
-    def read_file_yaml(self, url) -> None:
+    def read_file_yaml(self, url, z, urlz) -> None:
         try:
-            with open(url) as file:
-                content = yaml.safe_load(file)
+            if z:
+                with z.open(url) as file:
+                    content = yaml.safe_load(file)
+                    print("/////",type(content))
+                    print("/////",type(urlz))
+                self.extract_text_json_yaml(content, urlz)
+            else:
+                with open(url) as file:
+                    content = yaml.safe_load(file)
                 self.extract_text_json_yaml(content, url)
         except FileNotFoundError:
             print("The file doesn't exist.")
@@ -154,7 +176,7 @@ class Read:
             print("An error occurred:", e)
 
 
-    def read_file_xml(self, url) -> None:
+    def read_file_xml(self, url, z, urlz) -> None:
         try:
             tree = ET.parse(url)
             root = tree.getroot()
@@ -172,7 +194,7 @@ class Read:
         except Exception as e:
             print("An error occurred:", e)
 
-    def read_file_xlsx(self, url) -> None:
+    def read_file_xlsx(self, url, z, urlz) -> None:
         try:
             df = pd.read_excel(url)
             # df = df.loc[:, ~df.columns.str.contains('^Unnamed')]
@@ -192,7 +214,7 @@ class Read:
             print("An error occurred:", e)
 
 
-    def read_file_docx(self, url) -> None:
+    def read_file_docx(self, url, z, urlz) -> None:
         try:
             doc = Document(url)
             for p in doc.paragraphs:
@@ -202,7 +224,7 @@ class Read:
         except Exception as e:
             print("An error occurred:", e)
 
-    def read_file_pdf(self, url) -> None:
+    def read_file_pdf(self, url, z, urlz) -> None:
         try:
             reader = PdfReader(url)
             for page in reader.pages:
@@ -213,7 +235,7 @@ class Read:
             print("An error occurred:", e)
 
 
-    def read_file_image(self, name_file, url) -> None:
+    def read_file_image(self, url, z, urlz) -> None:
         try:
             img = Image.open(url)
         except FileNotFoundError:
@@ -222,7 +244,7 @@ class Read:
             print("An error occurred:", e)
 
 
-    def read_file_audio(self, name_file, url) -> None:
+    def read_file_audio(self, url, z, urlz) -> None:
         try:
             pass
             # audio = AudioSegment.from_file("file.mp3")
@@ -231,19 +253,38 @@ class Read:
         except Exception as e:
             print("An error occurred:", e)
 
-    # def read_file_video(self, name_file, url) -> None:
-    #     try:
-    #         video = cv2.VideoCapture(url)
-    #
-    #     except FileNotFoundError:
-    #         print("The file doesn't exist.")
-    #     except Exception as e:
-    #         print("An error occurred:", e)
-
-    def read_file_zip(self, name_file, url) -> None:
+    def read_file_video(self, url, z, urlz) -> None:
         try:
-            with zipfile.ZipFile(url) as z:
-                pass
+            video = cv2.VideoCapture(url)
+
+        except FileNotFoundError:
+            print("The file doesn't exist.")
+        except Exception as e:
+            print("An error occurred:", e)
+
+    def read_file_zip(self, url, z, urlz) -> None:
+        try:
+            urls = {}
+            urlz = []
+            with zipfile.ZipFile(url) as zip_obj:
+                # print(z.filename.split("/")[-1])
+                # for filename in zip_obj.namelist():
+                #     file_name = filename.split("/")[-1]
+                #     print(filename)
+                #     urls[file_name] = filename
+                # self.split_name_file(urls, zip_obj, url + "/" + filename)
+                for file_info in zip_obj.infolist():
+                    if file_info.is_dir():
+                        continue
+                    file_name = file_info.filename.split("/")[-1]
+                    # print(file_info.filename)
+                    urls[file_name] = file_info.filename
+                    urlz.append(url + "/" + file_info.filename)
+                    # urlz = file_info.filename
+                    # print(urls)
+                # print(urlz)
+                self.split_name_file(urls, zip_obj , urlz)
+
                 # df = z.extractall()
                 # print(df)
         except FileNotFoundError:
@@ -251,7 +292,7 @@ class Read:
         except Exception as e:
             print("An error occurred:", e)
 
-    def read_file_html(self, name_file, url) -> None:
+    def read_file_html(self, url, z, urlz) -> None:
         try:
             with open(url) as file:
                 soup = BeautifulSoup(file, "html.parser")
@@ -261,7 +302,7 @@ class Read:
             print("An error occurred:", e)
 
 
-    def read_file_code(self, name_file, url) -> None:
+    def read_file_code(self, url, z, urlz) -> None:
         try:
             with open(url) as file:
                 content = file.read()
@@ -271,7 +312,7 @@ class Read:
             print("An error occurred:", e)
 
 
-    def read_file_databace(self, name_file, url) -> None:
+    def read_file_databace(self, url, z, urlz) -> None:
         try:
             conn = sqlite3.connect(url)
             cursor = conn.cursor()
@@ -297,12 +338,13 @@ class Read:
             print("An error occurred:", e)
 
 
-    def read_file(self, name_file, url) -> None:
+    def read_file(self, url, z, urlz) -> None:
         try:
-            pass
-            # with open(url, "r") as file:
-            #     content = file.read()
-            #     # print(content)
+            if z:
+                # print("a")
+                with z.open(url, "r") as file:
+                    content = file.read()
+                    # print(content)
         except FileNotFoundError:
             print("The file doesn't exist.")
         except Exception as e:
