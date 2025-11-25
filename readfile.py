@@ -227,7 +227,10 @@ class Read:
                         value = str(value).strip()
                         if value:
                             words.extend(value.split())
-            self.data_all[url].extend(words)
+            if z:
+                self.data_all[urlz].extend(words)
+            else:
+                self.data_all[url].extend(words)
         except FileNotFoundError:
             print("The file doesn't exist.")
         except Exception as e:
