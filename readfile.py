@@ -93,12 +93,12 @@ class Read:
                 self.read_file_zip(url, z, urlzn)
             elif lis_name_file[-1] == "html":  ###########
                 self.read_file_html(url, z, urlzn)
-            elif lis_name_file[-1] == "py":  ###########
+            elif lis_name_file[-1] == "py" or lis_name_file[-1] == "md":  ###########
                 self.read_file_txt(url, z, urlzn)
             elif lis_name_file[-1] == "db":  ###########
                 self.read_file_databace(url, z, urlzn)
             else:
-                self.read_file(url, z, urlzn)
+                self.read_file_txt(url, z, urlzn)
 
     def read_file_txt(self, url, z, urlz) -> None:
         try:
@@ -362,15 +362,3 @@ class Read:
         except Exception as e:
             print("An error occurred:", e)
 
-
-    def read_file(self, url, z, urlz) -> None:
-        try:
-            if z:
-                # print("a")
-                with z.open(url, "r") as file:
-                    content = file.read()
-                    # print(content)
-        except FileNotFoundError:
-            print("The file doesn't exist.")
-        except Exception as e:
-            print("An error occurred:", e)
