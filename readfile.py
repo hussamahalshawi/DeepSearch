@@ -200,12 +200,12 @@ class Read:
             # df = df.loc[:, ~df.columns.str.contains('^Unnamed')]
             words = []
             for col in df.columns:
-                if "Unnamed" not in str(col):    # تجاهل النصوص الفارغة
+                if "Unnamed" not in str(col):
                     words.append(col)
                 for value in df[col]:
-                    if pd.notna(value):  # تجاهل القيم الفارغة
-                        value = str(value).strip()  # تحويل لنص وتنظيفه
-                        if value:  # تجاهل النصوص الفارغة
+                    if pd.notna(value):
+                        value = str(value).strip()
+                        if value:
                             words.extend(value.split())
             self.data_all[url].extend(words)
         except FileNotFoundError:
