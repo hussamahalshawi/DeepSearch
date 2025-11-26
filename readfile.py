@@ -17,13 +17,8 @@ from transformers import pipeline
 from pygments.lexer import words
 
 
-# from pydub import AudioSegment
-
-
 
 def get_urls_files(directory):
-    # urls = []
-    # name_files = []
     urls = {}
     for root, dirs, files in os.walk(directory):
         if ".git" not in  root:
@@ -53,14 +48,8 @@ class Read:
         urlzn = ""
         if urlz is None:
             urlz = []
-
-        # print(urlz)
         for index, (name_file, url) in enumerate(urls.items(), start=0):
-            # print(name_file, url)
-            # print("///////////")
-            # print(index)
             self.data_all[url] = []
-            # print("////////")
             lis_name_file = name_file.split(".")
             if urlz != []:
                 urlzn = urlz[index]
@@ -125,8 +114,6 @@ class Read:
             if z:
                 with z.open(url) as file:
                     content = json.load(file)
-                    # print("/////",type(content))
-                    # print("/////",type(urlz))
                 self.extract_text_json_yaml(content, urlz)
             else:
                 with open(url, "r") as file:
