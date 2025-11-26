@@ -4,7 +4,7 @@ import re
 class CleanData:
     def __init__(self, data: dict):
         """
-        Read url file
+        Clean data in  file
 
         Args:
             data (dict): url file.
