@@ -3,7 +3,7 @@
 # directory = "/home/hussam/ALL/work/programing/Python/books/الفواتير وتصميمها.docx"  #######################
 # directory = "/home/hussam/"
 directory = "/home/hussam/ALL/work/programing/Python/PycharmProjects/Larne_Python_TO_AI/Scientific and analytical basis/Python for Data Analysis/Review the basics/DeepSearch/test_file"
-pattern = r'[a-zA-Z0-9]'
+pattern = r'[a-zA-Z]'
 # text_search = "find the key with the maximum value"
 # text_search = "one for input and one for output"
 text_search = "price rating scatter"

@@ -16,7 +16,7 @@ if __name__ == "__main__":
         for index, item in enumerate(value):
             cuont1 += 1
     print(cuont1)
-    # print("--",data.urls)
+
     for key, value in data_new.items():
         # print(key)
         # print("++",value)
