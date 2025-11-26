@@ -85,12 +85,12 @@ class Read:
                 self.read_file_docx(url, z, urlzn)
             elif lis_name_file[-1] == "pdf":
                 self.read_file_pdf(url, z, urlzn)
-            elif lis_name_file[-1] == "png":###########
-                self.read_file_image(url, z, urlzn)
-            elif lis_name_file[-1] == "mp3":###########
-                self.read_file_audio(url, z, urlzn)
-            elif lis_name_file[-1] == "mp4":  ###########
-                self.read_file_video(url, z, urlzn)
+            # elif lis_name_file[-1] == "png":###########
+            #     self.read_file_image(url, z, urlzn)
+            # elif lis_name_file[-1] == "mp3":###########
+            #     self.read_file_audio(url, z, urlzn)
+            # elif lis_name_file[-1] == "mp4":  ###########
+            #     self.read_file_video(url, z, urlzn)
             elif lis_name_file[-1] == "zip":  ###########
                 self.read_file_zip(url, z, urlzn)
             elif lis_name_file[-1] == "html":  ###########
