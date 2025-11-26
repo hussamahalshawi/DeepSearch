@@ -169,8 +169,6 @@ class Read:
             if z:
                 with z.open(url) as file:
                     content = yaml.safe_load(file)
-                    # print("/////",type(content))
-                    # print("/////",type(urlz))
                 self.extract_text_json_yaml(content, urlz)
             else:
                 with open(url) as file:
@@ -206,7 +204,6 @@ class Read:
     def read_file_xlsx(self, url, z, urlz) -> None:
         try:
             df = pd.read_excel(url)
-            # df = df.loc[:, ~df.columns.str.contains('^Unnamed')]
             words = []
             for col in df.columns:
                 if "Unnamed" not in str(col):
@@ -323,16 +320,9 @@ class Read:
                     if file_info.is_dir():
                         continue
                     file_name = file_info.filename.split("/")[-1]
-                    # print(file_info.filename)
                     urls[file_name] = file_info.filename
                     urlz.append(url + "/" + file_info.filename)
-                    # urlz = file_info.filename
-                    # print(urls)
-                # print(urlz)
                 self.split_name_file(urls, zip_obj , urlz)
-
-                # df = z.extractall()
-                # print(df)
         except FileNotFoundError:
             print("The file doesn't exist.")
         except Exception as e:
@@ -366,13 +356,10 @@ class Read:
             tables = cursor.fetchall()
             rows = ()
             words = []
-
             for table_name in tables:
                 table_name = table_name[0]
                 cursor.execute(f"SELECT * FROM {table_name}")
                 rows = cursor.fetchall()
-
-            # عرض كل الصفوف
             for row in rows:
                 for word in row:
                     if word != None:
