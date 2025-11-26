@@ -6,6 +6,7 @@ from searchindata import SearchInData
 if __name__ == "__main__":
     cuont1 = 0
     cuont2 = 0
+    cuont3 = 0
     data = Read(directory)
     cleandata = CleanData(data.data_all)
     paragraph1 = cleandata.clean1()
@@ -19,9 +20,15 @@ if __name__ == "__main__":
     print(cuont1)
     searchindata = SearchInData(text_search)
     output1 = searchindata.search1(paragraph1)
+    for key, value in output1.items():
+        if value[0] != 0:
+            print(value)
+            cuont2 += 1
+    print(cuont2)
+
     for key, value in data_new.items():
         # print(key)
         # print("++",value)
         for index, item in enumerate(value):
-            cuont2 += 1
-    print(cuont2)
+            cuont3 += 1
+    print(cuont3)
