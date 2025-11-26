@@ -33,5 +33,15 @@ class SearchInData:
                 if re.search(self.text3, value):
                     self.score_output_search[key] = (self.score_output_search[key][0] + 1, value)
         return self.score_output_search
+
     def search3(self, data_new):
-        pass
+        for key, value in data_new.items():
+            for word in value:
+                for text in self.text1:
+                    if re.search(text, word):
+                        self.score_output_search[key] = (self.score_output_search[key][0] + 1, word)
+                    if re.search(self.text2, word):
+                        self.score_output_search[key] = (self.score_output_search[key][0] + 1, word)
+                    if re.search(self.text3, word):
+                        self.score_output_search[key] = (self.score_output_search[key][0] + 1, word)
+        return self.score_output_search

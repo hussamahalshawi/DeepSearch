@@ -11,6 +11,10 @@ if __name__ == "__main__":
     cleandata = CleanData(data.data_all)
     paragraph1 = cleandata.clean1()
     paragraph2, data_new = cleandata.clean2(pattern)
+    # for key, value in paragraph2.items():
+    #     print(type(key))
+    #     print(type(value))
+
 
     for key, value in data.data_all.items():
         # print(key)
@@ -21,7 +25,8 @@ if __name__ == "__main__":
     searchindata = SearchInData(text_search)
     output1 = searchindata.search1(paragraph1)
     output2 = searchindata.search2(paragraph2)
-    for key, value in output2.items():
+    output3 = searchindata.search3(data_new)
+    for key, value in output3.items():
         if value[0] != 0:
             print(value)
             cuont2 += 1
