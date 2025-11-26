@@ -20,7 +20,8 @@ if __name__ == "__main__":
     print(cuont1)
     searchindata = SearchInData(text_search)
     output1 = searchindata.search1(paragraph1)
-    for key, value in output1.items():
+    output2 = searchindata.search2(paragraph2)
+    for key, value in output2.items():
         if value[0] != 0:
             print(value)
             cuont2 += 1
