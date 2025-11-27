@@ -77,6 +77,8 @@ Search scoring & ranking
 Dictionaries, Sets, and high-performance text operations
 
 📂 Folder Structure
+
+```
 deepsearch/
 │── main.py
 │── readers/
@@ -90,3 +92,4 @@ deepsearch/
 │   └── search_engine.py
 └── utils/
     └── file_utils.py
+```
