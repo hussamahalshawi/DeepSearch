@@ -2,7 +2,7 @@
 .idea
 __pycache__/
 test_file
-app.py
-readfile.py
-cleandata.py
-searchindata.py
+app.py/
+readfile.py/
+cleandata.py/
+searchindata.py/
