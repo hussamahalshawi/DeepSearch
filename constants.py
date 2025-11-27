@@ -7,6 +7,7 @@ pattern = r'[a-zA-Z]'
 # text_search = "find the key with the maximum value"
 # text_search = "one for input and one for output"
 text_search = "price rating scatter"
+keyword = "price rating scatter"
 # text_search = "process"
 # text_search = "الصوت"
 # text_search = "hussam"

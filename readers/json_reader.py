@@ -1,4 +1,8 @@
 import json
+from typing import Dict
+
+from readers.base_reader import BaseReader
+
 
 class JSONReader(BaseReader):
     def read(self, path: str) -> Dict:

@@ -1,5 +1,8 @@
 from typing import Dict
 
+from readers.base_reader import BaseReader
+
+
 class TXTReader(BaseReader):
     def read(self, path: str) -> Dict:
         try:
