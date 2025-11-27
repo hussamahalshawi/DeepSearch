@@ -10,21 +10,22 @@ DeepSearch was the first step — a complete hands-on project designed to bring 
 
 🔥 Key Features
 
-Fast file scanning using multithreading (ThreadPoolExecutor)
+- Fast file scanning using multithreading (ThreadPoolExecutor)
 
-Clean architecture with SRP + Factory Pattern
+- Clean architecture with SRP + Factory Pattern
 
-Flexible file readers (TXT, JSON, and easily extendable)
+- Flexible file readers (TXT, JSON, and easily extendable)
 
-Regex-based text cleaning and tokenization
+- Regex-based text cleaning and tokenization
 
-Advanced search pipeline using token matches, partial matches, and ranking
+- Advanced search pipeline using token matches, partial matches, and ranking
 
-Extensible design: add new readers, clean steps, or scoring logic easily
+- Extensible design: add new readers, clean steps, or scoring logic easily
 
-Robust error handling and logging
+- Robust error handling and logging
 
 🧠 How the system works
+
 1️⃣ File Discovery
 
 All files in the directory are indexed using a fast recursive scanner.
@@ -35,23 +36,23 @@ Each file is processed in parallel via a Reader chosen dynamically (Factory Patt
 
 3️⃣ Cleaning & Preprocessing
 
-Remove unwanted patterns (e.g., URLs)
+- Remove unwanted patterns (e.g., URLs)
 
-Tokenize text
+- Tokenize text
 
-Normalize words for accurate search
+- Normalize words for accurate search
 
 4️⃣ Search Engine
 
 Implements custom ranking logic based on:
 
-exact matches
+- exact matches
 
-substring matches
+- substring matches
 
-fuzzy-like comparisons
+- fuzzy-like comparisons
 
-phrase scoring
+- phrase scoring
 
 5️⃣ Ranking
 
@@ -60,21 +61,21 @@ Zero-score files are removed automatically.
 
 🧩 Technologies & Concepts Used
 
-Python
+- Python
 
-Multithreading
+- Multithreading
 
-Design Patterns (Factory, SRP)
+- Design Patterns (Factory, SRP)
 
-Regex
+- Regex
 
-Clean Code principles
+- Clean Code principles
 
-File parsing
+- File parsing
 
-Search scoring & ranking
+- Search scoring & ranking
 
-Dictionaries, Sets, and high-performance text operations
+- Dictionaries, Sets, and high-performance text operations
 
 📂 Folder Structure
 
